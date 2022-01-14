@@ -29,7 +29,7 @@ if __name__=="__main__":
                 Strength.append("{0:.4e}".format(real[pointer[10*i+7]+0]))
                 Coefficient.append("{0:.4e}".format(real[pointer[10*i+7]+1]))
 
-    df = pandas.DataFrame(data={"Z": Z, "Ion": Ion, "Initial Level": InitialLevel, "Final Level": FinalLevel, "Energy": Energy, "Oscillator Strength": Strength, "Einstein A Coefficient": Coefficient})
-    df = df.sort_values(["Ion", "Energy"])
+    df = pandas.DataFrame(data={"Z": Z, "Ion": Ion, "Initial Level": InitialLevel, "Final Level": FinalLevel, "Energy": Energy, "Strength": Strength, "Coefficient": Coefficient})
+    df = df.sort_values(["Ion", "Initial Level"])
     df = df.reset_index(drop=True)
     print(df)
