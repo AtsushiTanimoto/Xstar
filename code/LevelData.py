@@ -1,16 +1,13 @@
 import astropy.io.fits
-import numpy
 import pandas
 
 
 if __name__=="__main__":
-    path     = "/Users/tanimoto/software/heasoft/heasoft-6.29/ftools/xstar/data/atdb.fits"
-    database = astropy.io.fits.open(path)
-    
-    pointer = database[1].data[0][0]
-    real    = database[2].data[0][0]
-    integer = database[3].data[0][0]
-    string  = database[4].data[0][0]
+    database = astropy.io.fits.open("/Users/tanimoto/software/heasoft/heasoft-6.29/ftools/xstar/data/atdb.fits")
+    pointer  = database[1].data[0][0]
+    real     = database[2].data[0][0]
+    integer  = database[3].data[0][0]
+    string   = database[4].data[0][0]
 
     Z             = []
     Ion           = []
@@ -23,7 +20,7 @@ if __name__=="__main__":
     Potential     = []
     Configuration = []
 
-    for i in range(1209343):
+    for i in range(len(pointer)//10):
         if pointer[10*i+1]==6:
             Z.append(integer[pointer[10*i+8]+2])
             Ion.append(integer[pointer[10*i+8]+4])
