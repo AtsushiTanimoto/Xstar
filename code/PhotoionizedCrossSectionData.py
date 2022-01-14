@@ -32,8 +32,8 @@ if __name__=="__main__":
                 N.append(integer[pointer[10*i+8]-1])
                 L.append(integer[pointer[10*i+8]+0])
                 J.append(integer[pointer[10*i+8]+1])
-                Energy.append("{0:.6e}".format(real[pointer[10*i+7]+2*j-1]))
-                CrossSection.append("{0:.6e}".format(real[pointer[10*i+7]+2*j+0]))
+                Energy.append("{0:.4e}".format(real[pointer[10*i+7]+2*j-1]))
+                CrossSection.append("{0:.4e}".format(real[pointer[10*i+7]+2*j+0]))
 
     df = pandas.DataFrame(data={"Z": Z, "Initial Ion": InitialIon, "Initial Level": InitialLevel, "Final Ion": FinalIon, "Final Level": FinalLevel, "N": N, "L": L, "2J": J, "Energy (Ry)": Energy, "Cross Section (Mb)": CrossSection})
     print(df)
