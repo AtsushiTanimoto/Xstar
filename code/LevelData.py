@@ -1,5 +1,6 @@
 import astropy.io.fits
 import pandas
+import tqdm
 
 
 if __name__=="__main__":
@@ -20,7 +21,7 @@ if __name__=="__main__":
     Potential     = []
     Configuration = []
 
-    for i in range(len(pointer)//10):
+    for i in tqdm.tqdm(range(len(pointer)//10)):
         if pointer[10*i+1]==6:
             Z.append(integer[pointer[10*i+8]+2])
             Ion.append(integer[pointer[10*i+8]+4])
