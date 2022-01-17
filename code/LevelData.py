@@ -20,7 +20,7 @@ if __name__=="__main__":
     Energy        = []
     Potential     = []
     Configuration = []
-
+    
     for i in tqdm.tqdm(range(len(pointer)//10)):
         if pointer[10*i+1]==6:
             Z.append(integer[pointer[10*i+8]+2])
