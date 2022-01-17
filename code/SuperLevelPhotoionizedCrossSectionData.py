@@ -10,6 +10,7 @@ if __name__=="__main__":
     real     = database[2].data[0][0]
     integer  = database[3].data[0][0]
     string   = database[4].data[0][0]
+    
 
     Electron = {  1: 1,
                   2: 2,   3: 1,
@@ -50,34 +51,32 @@ if __name__=="__main__":
     N           = []
     L           = []
     S           = []
+    Density     = []
+    Temperature = []
+    Rate        = []
     Energy      = []
     Cross       = []
 
     for i in tqdm.tqdm(range(len(pointer)//10)):
-        if pointer[10*i+1]==70 or pointer[10*i+1]==99:
+        if pointer[10*i+1]==70:
             nd = integer[pointer[10*i+8]-1]
             nt = integer[pointer[10*i+8]+0]
             nx = integer[pointer[10*i+8]+1]
+            N.append(integer[pointer[10*i+8]+2])
+            L.append(integer[pointer[10*i+8]+3])
+            S.append(integer[pointer[10*i+8]+4])
+            Z.append(integer[pointer[10*i+8]+5])
+            Upper_Level.append(integer[pointer[10*i+8]+6])
+            Upper_Ion.append(integer[pointer[10*i+8]+7])
+            Lower_Level.append(integer[pointer[10*i+8]+8])
+            Lower_Ion.append(integer[pointer[10*i+8]+9])
+            Density.append(real[pointer[10*i+7]-1:pointer[10*i+7]+nd-1])
+            Temperature.append(real[pointer[10*i+7]+nd-1:pointer[10*i+7]+nd+nt-1])
+            Rate.append(real[pointer[10*i+7]+nd+nt-1:pointer[10*i+7]+nd+nt+nd*nt-1])
+            Energy.append(real[pointer[10*i+7]+nd+nt+nd*nt-1:pointer[10*i+7]+nd+nt+nd*nt+2*nx-1:2])
+            Cross .append(real[pointer[10*i+7]+nd+nt+nd*nt+0:pointer[10*i+7]+nd+nt+nd*nt+2*nx+0:2])
 
-            for j in range(nx):
-                if integer[pointer[10*i+8]+7]==0:
-                    Z.append(integer[pointer[10*i+8]+5])
-                    Upper_Ion.append(integer[pointer[10*i+8]+7])
-                else:
-                    Z.append(int(-1+numpy.sqrt(1+8*integer[pointer[10*i+8]+9]+8*Electron[integer[pointer[10*i+8]+9]]-8))//2)
-                    Upper_Ion.append(integer[pointer[10*i+8]+9]+1)
-                
-                Lower_Ion.append(integer[pointer[10*i+8]+9])
-                Lower_Level.append(integer[pointer[10*i+8]+8])
-                Upper_Level.append(integer[pointer[10*i+8]+6])
-                N.append(integer[pointer[10*i+8]+2])
-                L.append(integer[pointer[10*i+8]+3])
-                S.append(integer[pointer[10*i+8]+4])
-                Energy.append("{0:.4e}".format(13.605*real[pointer[10*i+7]+nd+nt+nd*nt+2*j-1]))
-                Cross.append("{0:.4e}".format(real[pointer[10*i+7]+nd+nt+nd*nt+2*j+0]))
-
-    df = pandas.DataFrame(data={"Z": Z, "Lower_Ion": Lower_Ion, "Lower Level": Lower_Level, "Upper_Ion": Upper_Ion, "Upper Level": Upper_Level, "N": N, "L": L, "2S+1": S, "Energy (eV)": Energy, "Cross Section (Mb)": Cross})
+    df = pandas.DataFrame(data={"Z": Z, "Lower_Ion": Lower_Ion, "Lower Level": Lower_Level, "Upper_Ion": Upper_Ion, "Upper Level": Upper_Level, "N": N, "L": L, "2S+1": S, "Density": Density, "Temperature": Temperature, "Rate": Rate, "Energy (Ry)": Energy, "Cross Section (Mb)": Cross})
     df = df.sort_values(["Z", "Lower_Ion"])
     df = df.reset_index(drop=True)
-    df = df.query("Z==14")
     df.to_html("data.html")
