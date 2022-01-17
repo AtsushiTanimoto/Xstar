@@ -53,7 +53,7 @@ if __name__=="__main__":
     Energy      = []
     Cross       = []
 
-    for i in range(len(pointer)//10):
+    for i in tqdm.tqdm(range(len(pointer)//10)):
         if pointer[10*i+1]==70 or pointer[10*i+1]==99:
             nd = integer[pointer[10*i+8]-1]
             nt = integer[pointer[10*i+8]+0]
@@ -80,4 +80,4 @@ if __name__=="__main__":
     df = df.sort_values(["Z", "Lower_Ion"])
     df = df.reset_index(drop=True)
     df = df.query("Z==14")
-    df.to_html("sample.html")
+    df.to_html("data.html")
