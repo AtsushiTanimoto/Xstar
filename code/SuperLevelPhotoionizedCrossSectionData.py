@@ -53,7 +53,8 @@ if __name__=="__main__":
     S           = []
     Density     = []
     Temperature = []
-    Rate        = []
+    Rate01      = []
+    Rate02      = []
     Energy      = []
     Cross       = []
 
@@ -72,11 +73,30 @@ if __name__=="__main__":
             Lower_Ion.append(integer[pointer[10*i+8]+9])
             Density.append(real[pointer[10*i+7]-1:pointer[10*i+7]+nd-1])
             Temperature.append(real[pointer[10*i+7]+nd-1:pointer[10*i+7]+nd+nt-1])
-            Rate.append(real[pointer[10*i+7]+nd+nt-1:pointer[10*i+7]+nd+nt+nd*nt-1])
-            Energy.append(real[pointer[10*i+7]+nd+nt+nd*nt-1:pointer[10*i+7]+nd+nt+nd*nt+2*nx-1:2])
+            Rate01.append(real[pointer[10*i+7]+nd+nt-1:pointer[10*i+7]+nd+nt+nd*nt-1])
+            Energy.append(13.606*numpy.array(real[pointer[10*i+7]+nd+nt+nd*nt-1:pointer[10*i+7]+nd+nt+nd*nt+2*nx-1:2]))
             Cross .append(real[pointer[10*i+7]+nd+nt+nd*nt+0:pointer[10*i+7]+nd+nt+nd*nt+2*nx+0:2])
-
-    df = pandas.DataFrame(data={"Z": Z, "Lower_Ion": Lower_Ion, "Lower Level": Lower_Level, "Upper_Ion": Upper_Ion, "Upper Level": Upper_Level, "N": N, "L": L, "2S+1": S, "Density": Density, "Temperature": Temperature, "Rate": Rate, "Energy (Ry)": Energy, "Cross Section (Mb)": Cross})
+        elif pointer[10*i+1]==99:
+            nd = integer[pointer[10*i+8]-1]
+            nt = integer[pointer[10*i+8]+0]
+            nx = integer[pointer[10*i+8]+1]
+            N.append(integer[pointer[10*i+8]+2])
+            L.append(integer[pointer[10*i+8]+3])
+            S.append(integer[pointer[10*i+8]+4])
+            Z.append(integer[pointer[10*i+8]+5])
+            Upper_Level.append(integer[pointer[10*i+8]+6])
+            Upper_Ion.append(integer[pointer[10*i+8]+7])
+            Lower_Level.append(integer[pointer[10*i+8]+8])
+            Lower_Ion.append(integer[pointer[10*i+8]+9])
+            Density.append(real[pointer[10*i+7]-1:pointer[10*i+7]+nd-1])
+            Temperature.append(real[pointer[10*i+7]+nd-1:pointer[10*i+7]+nd+nt-1])
+            Rate02.append(numpy.log10(real[pointer[10*i+7]+nd+nt-1:pointer[10*i+7]+nd+nt+nd*nt-1]))
+            Energy.append(13.606*numpy.array(real[pointer[10*i+7]+nd+nt+nd*nt-1:pointer[10*i+7]+nd+nt+nd*nt+2*nx-1:2]))
+            Cross .append(real[pointer[10*i+7]+nd+nt+nd*nt+0:pointer[10*i+7]+nd+nt+nd*nt+2*nx+0:2])
+    
+    Rate = Rate01 + Rate02
+        
+    df = pandas.DataFrame(data={"Z": Z, "Lower_Ion": Lower_Ion, "Lower Level": Lower_Level, "Upper_Ion": Upper_Ion, "Upper Level": Upper_Level, "N": N, "L": L, "2S+1": S, "Density": Density, "Temperature": Temperature, "log Rate": Rate, "Energy (eV)": Energy, "Cross Section (Mb)": Cross})
     df = df.sort_values(["Z", "Lower_Ion"])
     df = df.reset_index(drop=True)
     df.to_html("data.html")
