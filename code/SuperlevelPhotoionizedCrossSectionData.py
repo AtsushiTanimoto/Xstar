@@ -62,11 +62,13 @@ if __name__=="__main__":
             for j in range(nx):
                 if integer[pointer[10*i+8]+7]==0:
                     Z.append(integer[pointer[10*i+8]+5])
+                    Upper_Ion.append(integer[pointer[10*i+8]+7])
                 else:
                     Z.append(int(-1+numpy.sqrt(1+8*integer[pointer[10*i+8]+9]+8*Electron[integer[pointer[10*i+8]+9]]-8))//2)
+                    Upper_Ion.append(integer[pointer[10*i+8]+9]+1)
+                
                 Lower_Ion.append(integer[pointer[10*i+8]+9])
                 Lower_Level.append(integer[pointer[10*i+8]+8])
-                Upper_Ion.append(integer[pointer[10*i+8]+7])
                 Upper_Level.append(integer[pointer[10*i+8]+6])
                 N.append(integer[pointer[10*i+8]+2])
                 L.append(integer[pointer[10*i+8]+3])
@@ -77,4 +79,5 @@ if __name__=="__main__":
     df = pandas.DataFrame(data={"Z": Z, "Lower_Ion": Lower_Ion, "Lower Level": Lower_Level, "Upper_Ion": Upper_Ion, "Upper Level": Upper_Level, "N": N, "L": L, "2S+1": S, "Energy (eV)": Energy, "Cross Section (Mb)": Cross})
     df = df.sort_values(["Z", "Lower_Ion"])
     df = df.reset_index(drop=True)
+    df = df.query("Z==14")
     df.to_html("sample.html")
