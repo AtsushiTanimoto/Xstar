@@ -43,6 +43,7 @@ if __name__=="__main__":
                 407:29, 408:28, 409:27, 410:26, 411:25, 412:24, 413:23, 414:22, 415:21, 416:20, 417:19, 418:18, 419:17, 420:16, 421:15, 422:14, 423:13, 424:12, 425:11, 426:10, 427: 9, 428: 8, 429:7, 430:6, 431:5, 432:4, 433:3, 434:2, 435:1,
                 436:30, 437:29, 438:28, 439:27, 440:26, 441:25, 442:24, 443:23, 444:22, 445:21, 446:20, 447:19, 448:18, 449:17, 450:16, 451:15, 452:14, 453:13, 454:12, 455:11, 456:10, 457: 9, 458:8, 459:7, 460:6, 461:5, 462:4, 463:3, 464:2, 465:1}
 
+    Datatype    = []
     Z           = []
     Lower_Ion   = []
     Lower_Level = []
@@ -63,6 +64,7 @@ if __name__=="__main__":
             nd = integer[pointer[10*i+8]-1]
             nt = integer[pointer[10*i+8]+0]
             nx = integer[pointer[10*i+8]+1]
+            Datatype.append(pointer[10*i+1])
             N.append(integer[pointer[10*i+8]+2])
             L.append(integer[pointer[10*i+8]+3])
             S.append(integer[pointer[10*i+8]+4])
@@ -80,6 +82,7 @@ if __name__=="__main__":
             nd = integer[pointer[10*i+8]-1]
             nt = integer[pointer[10*i+8]+0]
             nx = integer[pointer[10*i+8]+1]
+            Datatype.append(pointer[10*i+1])
             N.append(integer[pointer[10*i+8]+2])
             L.append(integer[pointer[10*i+8]+3])
             S.append(integer[pointer[10*i+8]+4])
@@ -96,7 +99,5 @@ if __name__=="__main__":
     
     Rate = Rate01 + Rate02
         
-    df = pandas.DataFrame(data={"Z": Z, "Lower_Ion": Lower_Ion, "Lower Level": Lower_Level, "Upper_Ion": Upper_Ion, "Upper Level": Upper_Level, "N": N, "L": L, "2S+1": S, "Density": Density, "Temperature": Temperature, "log Rate": Rate, "Energy (eV)": Energy, "Cross Section (Mb)": Cross})
-    df = df.sort_values(["Z", "Lower_Ion"])
-    df = df.reset_index(drop=True)
+    df = pandas.DataFrame(data={"Datatype":Datatype, "Z": Z, "Lower_Ion": Lower_Ion, "Lower Level": Lower_Level, "Upper_Ion": Upper_Ion, "Upper Level": Upper_Level, "N": N, "L": L, "2S+1": S, "Density": Density, "Temperature": Temperature, "log Rate": Rate, "Energy (eV)": Energy, "Cross Section (Mb)": Cross})
     df.to_html("data.html")
